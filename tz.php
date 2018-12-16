@@ -225,27 +225,7 @@ elseif($_GET['act'] == "Function")
 
 //MySQL检测
 
-if ($_POST['act'] == 'MySQL检测')
-{
-
-	$host = isset($_POST['host']) ? trim($_POST['host']) : '';
-
-	$port = isset($_POST['port']) ? (int) $_POST['port'] : '';
-
-	$login = isset($_POST['login']) ? trim($_POST['login']) : '';
-
-	$password = isset($_POST['password']) ? trim($_POST['password']) : '';
-
-	$host = preg_match('~[^a-z0-9\-\.]+~i', $host) ? '' : $host;
-
-	$port = intval($port) ? intval($port) : '';
-
-	$login = preg_match('~[^a-z0-9\_\-]+~i', $login) ? '' : htmlspecialchars($login);
-
-	$password = is_string($password) ? htmlspecialchars($password) : '';
-
-}
-elseif ($_POST['act'] == '函数检测')
+if ($_POST['act'] == '函数检测')
 {
 
 	$funRe = "函数".$_POST['funName']."支持状况检测结果：".isfun1($_POST['funName']);
@@ -1476,13 +1456,13 @@ foreach ($able as $key=>$value) {
 
 		<?php
 
-		$phpSelf = $_SERVER['PHP_SELF'] ? $_SERVER['PHP_SELF'] : $_SERVER['SCRIPT_NAME'];
+		$phpSelf = $_SERVER[PHP_SELF] ? $_SERVER[PHP_SELF] : $_SERVER[SCRIPT_NAME];
 
 		$disFuns=get_cfg_var("disable_functions");
 
 		?>
 
-    <?php echo (true==preg_match("/phpinfo/i",$disFuns))? '<font color="red">×</font>' :"<a href='$phpSelf?act=phpinfo' target='_blank'>PHPINFO</a>";?>
+		<?php echo (true==preg_match("/phpinfo/i",$disFuns))? '<font color="red">×</font>' :"<a href='$phpSelf?act=phpinfo' target='_blank'>PHPINFO</a>";?>
 
     </td>
 
@@ -2151,28 +2131,26 @@ else
 
 <table>
 
-	<tr><th colspan="3">MySQL数据库连接检测</th></tr>
+	<tr><th colspan="2">MySQL数据库连接检测</th></tr>
 
   <tr>
 
-    <td width="15%"></td>
+    <td width="80%">
 
-    <td width="60%">
+      地址：<input type="text" name="host" value="localhost" size="8" />
 
-      地址：<input type="text" name="host" value="localhost" size="10" />
+      端口：<input type="text" name="port" value="3306" size="5" />
 
-      端口：<input type="text" name="port" value="3306" size="10" />
+      用户名：<input type="text" name="login" value="root" size="10" />
 
-      用户名：<input type="text" name="login" size="10" />
-
-      密码：<input type="password" name="password" size="10" />
+      密码：<input type="password" name="password" value="root" size="10" />
 
     </td>
 
-    <td width="25%">
-
-      <input class="btn" type="submit" name="act" value="MySQL检测" />
-
+    <td width="20%">
+      <!-- /* <input class="btn" type="submit" name="act" value="mysql" /> */ -->
+	  <input class="btn" type="submit" name="act" value="mysqli" />
+	  <input class="btn" type="submit" name="act" value="pdo" />
     </td>
 
   </tr>
@@ -2181,29 +2159,74 @@ else
 
   <?php
 
-  if ($_POST['act'] == 'MySQL检测') {
 
-  	if(function_exists("mysql_close")==1) {
+	/* if ($_POST['act'] == 'mysql') {
 
-  		$link = @mysql_connect($host.":".$port,$login,$password);
+		$host = isset($_POST['host']) ? trim($_POST['host']) : '';
+		$port = isset($_POST['port']) ? (int) $_POST['port'] : '';
+		$login = isset($_POST['login']) ? trim($_POST['login']) : '';
+		$password = isset($_POST['password']) ? trim($_POST['password']) : '';
+		$host = preg_match('~[^a-z0-9\-\.]+~i', $host) ? '' : $host;
+		$port = intval($port) ? intval($port) : '';
+		$login = preg_match('~[^a-z0-9\_\-]+~i', $login) ? '' : htmlspecialchars($login);
+		$password = is_string($password) ? htmlspecialchars($password) : '';
 
-  		if ($link){
+		if(function_exists("mysql_close")==1) {
+			$link = @mysql_connect($host,$login,$password);
+			if ($link){
+				echo "<script>alert('连接到MySql数据库正常')</script>";
+			} else {
+				echo "<script>alert('无法连接到MySql数据库！')</script>";
+			}
+		}else {
+			echo "<script>alert('服务器不支持MySQL！')</script>";
+		}
+	}
+	 */
 
-  			echo "<script>alert('连接到MySql数据库正常')</script>";
+	if($_POST['act'] == 'mysqli'){
+		$host = isset($_POST['host']) ? trim($_POST['host']) : '';
+		$port = isset($_POST['port']) ? (int) $_POST['port'] : '';
+		$login = isset($_POST['login']) ? trim($_POST['login']) : '';
+		$password = isset($_POST['password']) ? trim($_POST['password']) : '';
+		$host = preg_match('~[^a-z0-9\-\.]+~i', $host) ? '' : $host;
+		$port = intval($port) ? intval($port) : '';
+		$login = preg_match('~[^a-z0-9\_\-]+~i', $login) ? '' : htmlspecialchars($login);
+		$password = is_string($password) ? htmlspecialchars($password) : '';
 
-  		} else {
+		if(function_exists("mysqli_close") == 1) {
+			$link = mysqli_connect($host,$login,$password);		
+			if ($link){
+				echo "<script>alert('通过mysqli连接到MySql数据库正常')</script>";
+			} else {
+				echo "<script>alert('无法通过mysqli连接到MySql数据库！')</script>";
+			}
+		} else {
+			echo "<script>alert('服务器不支持MySQLi！')</script>";
+		}
+	}
 
-  			echo "<script>alert('无法连接到MySql数据库！')</script>";
-
-  		}
-
-  	} else {
-
-  		echo "<script>alert('服务器不支持MySQL数据库！')</script>";
-
-  	}
-
-  }
+	if($_POST['act'] == 'pdo' ){		
+		$host = isset($_POST['host']) ? trim($_POST['host']) : '';
+		$port = isset($_POST['port']) ? (int) $_POST['port'] : '';
+		$login = isset($_POST['login']) ? trim($_POST['login']) : '';
+		$password = isset($_POST['password']) ? trim($_POST['password']) : '';
+		$host = preg_match('~[^a-z0-9\-\.]+~i', $host) ? '' : $host;
+		$port = intval($port) ? intval($port) : '';
+		$login = preg_match('~[^a-z0-9\_\-]+~i', $login) ? '' : htmlspecialchars($login);
+		$password = is_string($password) ? htmlspecialchars($password) : '';
+	
+		if(class_exists('pdo')) {
+			$link = new PDO('mysql:host=localhost;',$login,$password);
+			if ($link){
+				echo "<script>alert('通过pdo连接到MySql数据库正常')</script>";
+			} else {
+				echo "<script>alert('无法通过pdo连接到MySql数据库！')</script>";
+			}
+		} else {
+			echo "<script>alert('服务器不支持PDO！')</script>";
+		}
+	}
 
 	?>
 	
@@ -2288,8 +2311,6 @@ else
 </table>
 
 </form>
-
-
 
 	<table>
 		<tr>
