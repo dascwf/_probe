@@ -960,7 +960,6 @@ if ($_GET['act'] == "rt")
 <meta http-equiv="X-UA-Compatible" content="IE=EmulateIE7" />
 
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
-<!-- Powered by: Yahei.Net -->
 
 <style type="text/css">
 <!--
@@ -1145,7 +1144,7 @@ function displayData(dataJSON)
 	
 	<table>
 		<tr>
-			<th class="w_logo">雅黑PHP探针</th>
+			<th class="w_logo"><?php echo $title;?></th>
 			<th class="w_top"><a href="#w_php">PHP参数</a></th>
 			<th class="w_top"><a href="#w_module">组件支持</a></th>
 			<th class="w_top"><a href="#w_module_other">第三方组件</a></th>
@@ -1155,7 +1154,7 @@ function displayData(dataJSON)
 			<th class="w_top"><a href="#w_MySQL">MySQL检测</a></th>
 			<th class="w_top"><a href="#w_function">函数检测</a></th>
 			<th class="w_top"><a href="#w_mail">邮件检测</a></th>
-			<th class="w_top"><a href="http://www.yahei.net/tz/tz.zip">探针下载</a></th>
+			<th class="w_top"><a href="https://github.com/dascwf/_probe">Github</a></th>
 		</tr>
 	</table>
 
@@ -2307,7 +2306,7 @@ else
 
 	<table>
 		<tr>
-			<td class="w_foot"><A HREF="http://www.Yahei.Net" target="_blank"><?php echo $title.$version;?></A></td>
+			<td class="w_foot"><A HREF="https://github.com/dascwf/_probe" target="_blank"><?php echo $title.$version;?></A></td>
 			<td class="w_foot"><?php $run_time = sprintf('%0.4f', microtime_float() - $time_start);?>Processed in <?php echo $run_time?> seconds. <?php echo memory_usage();?> memory usage.</td>
 			<td class="w_foot"><a href="#w_top">返回顶部</a></td>
 		</tr>
